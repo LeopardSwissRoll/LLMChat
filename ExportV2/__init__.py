@@ -1,2 +1,2 @@
-"""Minimal Discord + Codex backend built on top of Export VT."""
+"""ExportV2 — minimal Discord ↔ LLM CLI (Claude Code / Codex) PTY bridge."""
 

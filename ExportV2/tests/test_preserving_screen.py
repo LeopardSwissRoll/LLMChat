@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pyte
 
-from Export.vt.pyte_patch import PreservingScreen
+from ExportV2.vt.pyte_patch import PreservingScreen
 
 
 def _make_screen(cols=20, rows=10) -> tuple[PreservingScreen, pyte.Stream]:

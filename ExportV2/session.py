@@ -11,24 +11,22 @@ import time
 from collections import deque
 from pathlib import Path
 
-from Export.vt.virtual_terminal import VirtualTerminal
-from v2.bridge.core.turn_executor import _collapse_tool_blocks, _compress_blank_lines
-
-from .prompt_composer import PromptComposer
-from v2.bridge.providers.base import ProviderAdapter
-from v2.bridge.providers.claude import ClaudeAdapter
-from v2.bridge.providers.codex import CodexAdapter
-
 from .logs import ServerStore
 from .models import (
     LlmSettings,
     PersonaChannelState,
-    PersonaConfig as V2PersonaConfig,
+    PersonaConfig,
     PersonaSettings,
     ProviderState,
     ServerRuntimeState,
     ServerSettings,
 )
+from .prompt_composer import PromptComposer
+from .providers.base import ProviderAdapter
+from .providers.claude import ClaudeAdapter
+from .providers.codex import CodexAdapter
+from .textutil import collapse_tool_blocks, compress_blank_lines
+from .vt.virtual_terminal import VirtualTerminal
 
 LOGGER = logging.getLogger(__name__)
 
@@ -59,6 +57,7 @@ class PersonaSession:
         store: ServerStore,
         server_state: ServerRuntimeState,
         state: PersonaChannelState,
+        prompts_root: Path,
     ) -> None:
         self._llm = llm
         self._server = server
@@ -76,7 +75,8 @@ class PersonaSession:
         self._activity_event: asyncio.Event | None = None
         self._raw_chunks: deque[str] = deque(maxlen=200)
         self._raw_lock = threading.Lock()
-        self._prompt_composer = PromptComposer(Path(__file__).resolve().parent.parent / "v2")
+        self._prompts_root = prompts_root
+        self._prompt_composer = PromptComposer(prompts_root)
         self._ready = False
         self._spawn_started_at = 0.0
 
@@ -137,8 +137,8 @@ class PersonaSession:
             fast=self._llm.fast,
         )
 
-    def _v2_persona(self) -> V2PersonaConfig:
-        return V2PersonaConfig(
+    def _persona_config(self) -> PersonaConfig:
+        return PersonaConfig(
             persona_id=self._persona.persona_id,
             display_name=self._persona.display_name,
             role_aliases=(self._persona.display_name,),
@@ -155,18 +155,15 @@ class PersonaSession:
     def _compose_prompt(self) -> str:
         return self._prompt_composer.compose(
             self._llm.provider,
-            self._v2_persona(),
+            self._persona_config(),
             protagonist_id=None,
             mode=5,
         )
 
     def _add_dirs(self) -> list[Path]:
-        prompts_root = (
-            Path(__file__).resolve().parent.parent / "v2" / "prompts" / self._persona.prompt_dir
-        ).resolve()
         return [
             self._store.channel_log_dir(self._channel_id).resolve(),
-            prompts_root,
+            (self._prompts_root / self._persona.prompt_dir).resolve(),
         ]
 
     def _spawn_args(self, *, resume_id: str | None) -> tuple[list[str], dict[str, str]]:
@@ -257,7 +254,7 @@ class PersonaSession:
     def _clear_local_screen(self) -> None:
         if self._vt is None:
             return
-        with self._vt._lock:  # noqa: SLF001 - intentional Export internals access
+        with self._vt._lock:  # noqa: SLF001 - intentional VirtualTerminal internals access
             self._vt._screen.reset()
             self._vt._screen.history.top.clear()
             self._vt._screen.history.bottom.clear()
@@ -324,8 +321,8 @@ class PersonaSession:
 
     @staticmethod
     def _sanitize_response(response: str) -> str:
-        response = _collapse_tool_blocks(response)
-        response = _compress_blank_lines(response)
+        response = collapse_tool_blocks(response)
+        response = compress_blank_lines(response)
         return response.strip()
 
     def _detect_startup_key(self, *, lines: list[str], raw_text: str) -> str | None:

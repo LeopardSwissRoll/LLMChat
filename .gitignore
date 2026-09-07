@@ -9,16 +9,23 @@ ExportV2/settings.json
 .bridge/
 .data/
 *.log
-v2_bridge.log
 
-# ── 페르소나 프롬프트 자산 (스크랩 콘텐츠 포함, 저장소에서 제외) ──
+# ── 페르소나 프롬프트 자산 (규약 문서와 예시만 추적) ──
 Persona/
-v2/prompts/*
-!v2/prompts/README.md
-!v2/prompts/example/
-!v2/prompts/providers/
-v2/prompts/providers/*
-!v2/prompts/providers/.gitkeep
+ExportV2/prompts/*
+!ExportV2/prompts/README.md
+!ExportV2/prompts/example/
+!ExportV2/prompts/providers/
+ExportV2/prompts/providers/*
+!ExportV2/prompts/providers/.gitkeep
+
+# ── 로컬 보관, 저장소 미포함 (전체 v2 브리지는 git 이력 ab71988 에 있음) ──
+v2/
+Export/
+fakeTerm.py
+fakeTerm.md
+test_hangul.py
+test_ime.py
 
 # ── Python ──
 __pycache__/

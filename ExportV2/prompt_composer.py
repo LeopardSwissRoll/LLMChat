@@ -13,9 +13,14 @@ REFERENCE_MARKER_RE = re.compile(r'^\s*@레퍼런스\s*$', re.MULTILINE)
 
 
 class PromptComposer:
-    """Combines shared + provider + persona prompt assets.
+    """Combines shared + provider + persona prompt assets under ``prompts_root``.
 
-    Persona Levels:
+    Layout:
+        prompts_root/bot_global.md            shared preamble (optional)
+        prompts_root/providers/<provider>.md  per-provider instructions (optional)
+        prompts_root/<prompt_dir>/PROMPT.md   persona document (required)
+
+    Persona Levels (``mode``):
         LV1 (core)       — @@1 only
         LV2 (soft)       — @@1~@@3
         LV3 (medium)     — @@1~@@4
@@ -23,9 +28,8 @@ class PromptComposer:
         LV5 (masquerade) — full PROMPT.md
     """
 
-    def __init__(self, v2_root: Path) -> None:
-        self._v2_root = v2_root
-        self._prompts_root = v2_root / "prompts"
+    def __init__(self, prompts_root: Path) -> None:
+        self._prompts_root = Path(prompts_root)
 
     def compose(
         self,

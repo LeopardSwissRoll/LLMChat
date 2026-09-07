@@ -212,6 +212,7 @@ class ExportV2DiscordClient(discord.Client):
             store=runtime.store,
             server_state=runtime.state,
             state=persona_state,
+            prompts_root=self._settings.prompts_root,
         )
         runtime.sessions[key] = session
         return session

@@ -11,7 +11,7 @@ from .discord_backend import ExportV2DiscordClient
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         prog="python -m ExportV2",
-        description="Run the minimal ExportV2 Discord + Codex backend.",
+        description="Run the minimal ExportV2 Discord <-> LLM CLI (Claude Code / Codex) bridge.",
     )
     parser.add_argument(
         "--settings",

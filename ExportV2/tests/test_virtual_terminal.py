@@ -6,8 +6,8 @@ import time
 
 from pyte.screens import Char
 
-from Export.vt.virtual_terminal import VirtualTerminal
-from Export.vt.virtual_terminal import VTState
+from ExportV2.vt.virtual_terminal import VirtualTerminal
+from ExportV2.vt.virtual_terminal import VTState
 
 
 def _vt(cols: int = 10, rows: int = 3) -> VirtualTerminal:
@@ -127,7 +127,7 @@ def test_start_sets_starting_before_reader_thread_starts(monkeypatch):
         def is_alive(self) -> bool:
             return False
 
-    monkeypatch.setattr("Export.vt.virtual_terminal.threading.Thread", FakeThread)
+    monkeypatch.setattr("ExportV2.vt.virtual_terminal.threading.Thread", FakeThread)
 
     vt.start()
 

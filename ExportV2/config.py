@@ -18,6 +18,10 @@ def _default_settings_path() -> Path:
     return Path(__file__).resolve().parent / "settings.json"
 
 
+def _default_prompts_root() -> Path:
+    return Path(__file__).resolve().parent / "prompts"
+
+
 def _resolve_executable(provider: str, executable: str) -> str:
     raw = executable.strip()
     if not raw:
@@ -72,6 +76,8 @@ def load_settings(path: str | Path | None = None) -> AppSettings:
 
     data_root = _resolve_root(payload.get("data_root", ".data"))
     bridge_root = _resolve_root(payload.get("bridge_root", ".bridge"))
+    prompts_raw = payload.get("prompts_root")
+    prompts_root = _resolve_root(str(prompts_raw)) if prompts_raw else _default_prompts_root()
 
     llm_cfg = payload.get("llm", {})
     provider = str(llm_cfg.get("provider", "claude")).strip().lower()
@@ -130,6 +136,7 @@ def load_settings(path: str | Path | None = None) -> AppSettings:
         bot_token=bot_token,
         data_root=data_root,
         bridge_root=bridge_root,
+        prompts_root=prompts_root,
         llm=llm,
         servers=servers,
     )

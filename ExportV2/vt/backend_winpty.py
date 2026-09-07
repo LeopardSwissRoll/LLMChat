@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from winpty import PtyProcess
 
-from Export.debug import log
+from ..debug import log
 from .backend import PtyBackend
 
 

@@ -5,12 +5,11 @@ from pathlib import Path
 
 
 # ---------------------------------------------------------------------------
-# Adapter contract types (ported verbatim from v2.bridge.models)
+# Provider adapter contract types
 # ---------------------------------------------------------------------------
-# These are the dataclasses the v2 provider adapters and PromptComposer
-# expect to receive. ExportV2 keeps its own settings types (LlmSettings,
-# PersonaSettings, ServerSettings) and constructs these on the fly when
-# talking to adapters, so the field set must stay byte-compatible with v2.
+# The provider adapters (providers/*) and PromptComposer receive these.
+# Settings types further below are separate; PersonaSession constructs
+# PersonaConfig / ProviderState on the fly when talking to adapters.
 
 
 @dataclass(frozen=True)
@@ -19,7 +18,7 @@ class PersonaConfig:
     display_name: str
     role_aliases: tuple[str, ...]
     identity_text: str
-    prompt_dir: Path  # relative to v2/prompts, e.g. "aris"
+    prompt_dir: Path  # relative to prompts_root, e.g. "example"
     avatar_url: str | None = None
     enabled_providers: tuple[str, ...] = ("claude", "codex")
     pty_rows: int = 50
@@ -27,6 +26,19 @@ class PersonaConfig:
     message_edit_interval: float = 2.0
     response_timeout: float = 1800.0
     idle_seconds: float = 3.0
+
+
+@dataclass(frozen=True)
+class ProviderCapabilities:
+    model_switch: bool = False
+    effort: bool = False
+    permission: bool = False
+    fast: bool = False
+    compact: bool = False
+    clear: bool = False
+    interrupt: bool = True
+    usage: bool = False
+    interactive_prompts: bool = False
 
 
 @dataclass
@@ -40,6 +52,31 @@ class ProviderState:
     permission: str = "default"
     fast: bool = False
     last_seen_msg_id: str | None = None
+
+
+@dataclass(frozen=True)
+class ProviderConfig:
+    provider_id: str
+    cli_executable: str
+    cli_args: tuple[str, ...]
+    enabled: bool = True
+    default_capabilities: ProviderCapabilities = field(
+        default_factory=ProviderCapabilities,
+    )
+    default_state: ProviderState = field(default_factory=ProviderState)
+
+
+@dataclass
+class ResponseMeta:
+    opening_line: str = ""
+    closing_line: str = ""
+
+
+@dataclass(frozen=True)
+class InteractionPrompt:
+    kind: str
+    text: str
+    choices: tuple[str, ...] = ()
 
 
 # ---------------------------------------------------------------------------
@@ -83,6 +120,7 @@ class AppSettings:
     bot_token: str
     data_root: Path
     bridge_root: Path
+    prompts_root: Path
     llm: LlmSettings
     servers: dict[int, ServerSettings]
 

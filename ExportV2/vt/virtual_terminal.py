@@ -14,7 +14,7 @@ from types import MappingProxyType
 import pyte
 from pyte.screens import Char
 
-from Export.debug import is_enabled, log, log_screen_snapshot
+from ..debug import is_enabled, log, log_screen_snapshot
 from .backend import PtyBackend
 from .backend_winpty import WinPtyBackend
 from .pyte_patch import PreservingScreen, apply as apply_pyte_patch, filter_private_modes

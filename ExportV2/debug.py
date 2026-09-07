@@ -1,4 +1,4 @@
-"""Tiny debug helpers for the exported mini-engine."""
+"""Tiny debug helpers for the virtual terminal (opt-in file log)."""
 
 from __future__ import annotations
 
