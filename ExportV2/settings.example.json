@@ -1,0 +1,31 @@
+{
+  "bot_token": "PUT-YOUR-DISCORD-BOT-TOKEN-HERE",
+  "data_root": ".data",
+  "bridge_root": ".bridge",
+  "llm": {
+    "provider": "claude",
+    "cli_executable": "claude",
+    "cli_args": [],
+    "model": "opus",
+    "effort": "high",
+    "permission": "bypass",
+    "fast": false,
+    "rows": 50,
+    "cols": 200,
+    "idle_seconds": 5.0,
+    "startup_timeout": 60.0,
+    "response_timeout": 1800.0
+  },
+  "servers": {
+    "YOUR_GUILD_ID": {
+      "workspace": "C:\path\to\workspace",
+      "personas": {
+        "example": {
+          "display_name": "Example",
+          "prompt_dir": "example",
+          "avatar_url": ""
+        }
+      }
+    }
+  }
+}

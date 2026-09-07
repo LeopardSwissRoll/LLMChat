@@ -1,0 +1,6 @@
+discord.py>=2.3
+python-dotenv>=1.0
+pywinpty>=2.0
+pyte>=0.8
+pygments>=2.17
+aiohttp>=3.9

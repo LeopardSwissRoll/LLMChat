@@ -1,0 +1,35 @@
+# ── 비밀 / 런타임 상태 (절대 커밋 금지) ──
+.kiss
+.env
+.tmpenv
+*.env
+!*.env.example
+ExportV2/settings.json
+.claude/
+.bridge/
+.data/
+*.log
+v2_bridge.log
+
+# ── 페르소나 프롬프트 자산 (스크랩 콘텐츠 포함, 저장소에서 제외) ──
+Persona/
+v2/prompts/*
+!v2/prompts/README.md
+!v2/prompts/example/
+!v2/prompts/providers/
+v2/prompts/providers/*
+!v2/prompts/providers/.gitkeep
+
+# ── Python ──
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.tmp_codex*/
+*.egg-info/
+.venv/
+venv/
+
+# ── 에디터 ──
+.idea/
+.vscode/
+*.swp

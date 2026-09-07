@@ -1,0 +1,44 @@
+{
+  "DEFAULT_MODE": 4,
+  "DEFAULT_PROVIDER": "claude",
+  "DEFAULT_COMMAND_ACCESS": "public",
+  "DEFAULT_LV1_ADD_DIRS": [
+    "channel",
+    "persona"
+  ],
+  "DEFAULT_ADD_DIRS": [
+    "channel",
+    "users",
+    "persona"
+  ],
+  "ENABLED_PROVIDERS": [
+    "claude",
+    "codex"
+  ],
+  "CLAUDE_ENABLED": true,
+  "CLAUDE_CLI_EXECUTABLE": "claude",
+  "CLAUDE_CLI_ARGS": [
+    "--verbose"
+  ],
+  "CLAUDE_DEFAULT_MODE": 4,
+  "CLAUDE_DEFAULT_MODEL": "opus",
+  "CLAUDE_DEFAULT_EFFORT": "high",
+  "CLAUDE_DEFAULT_PERMISSION": "bypass",
+  "CLAUDE_DEFAULT_FAST": false,
+  "CODEX_ENABLED": true,
+  "CODEX_CLI_EXECUTABLE": "codex",
+  "CODEX_CLI_ARGS": [
+    "--no-alt-screen"
+  ],
+  "CODEX_DEFAULT_MODE": 4,
+  "CODEX_DEFAULT_MODEL": "gpt-5.4",
+  "CODEX_DEFAULT_EFFORT": "xhigh",
+  "CODEX_DEFAULT_PERMISSION": "bypass",
+  "CODEX_DEFAULT_FAST": false,
+  "WEB_PUBLISH_ENABLED": false,
+  "WEB_PUBLISH_PORT": 8080,
+  "WEB_PUBLISH_BASE_URL": "",
+  "WEB_PUBLISH_GUILD_ID": "",
+  "WEB_PUBLISH_THRESHOLD": 500,
+  "WEB_PUBLISH_SUMMARY_LENGTH": 200
+}
