@@ -56,7 +56,7 @@ ConsoleSession(vt).run()
 ```powershell
 python -m Export
 python -m Export -- cmd.exe
-python -m Export --cwd C:\Users\assort_037\Desktop\Terminalist -- powershell.exe
+python -m Export --cwd C:\path\to\workspace -- powershell.exe
 ```
 
 ## Test commands
